@@ -1,0 +1,50 @@
+using System.ComponentModel;
+using UnityEngine;
+
+public class NPC_FuzzyBehaviour : MonoBehaviour
+{
+
+    // Curves to weigh partial truths
+    [SerializeField] private AnimationCurve low;
+    [SerializeField] private AnimationCurve mid;
+    [SerializeField] private AnimationCurve high;
+
+    // Arrogance value set in editor (1-10) 
+    [SerializeField] private float arrogance;
+
+    // The level of partial truths evaluated against the graphs
+    [SerializeField] private float low_value = 0f;
+    [SerializeField] private float mid_value = 0f;
+    [SerializeField] private float high_value = 0f;
+
+    // When the crime committed signal is broadcasted, evaluate which reaction the NPC should have
+    private void OnEnable() => EventManager.OnCommitCrime += EvaluateStatements;
+
+    private void OnDisable() => EventManager.OnCommitCrime -= EvaluateStatements;
+
+    // Evaluate the different graphs and determine which reaction state to set corresponding to which is most truthful
+    public void EvaluateStatements()
+    {
+        // 
+        low_value = low.Evaluate(arrogance);
+        mid_value = mid.Evaluate(arrogance);
+        high_value = high.Evaluate(arrogance);
+
+        // If high arrogance is the most truthful (greater than) then the NPC will fight the criminal
+        if (high_value > mid_value && high_value > low_value)
+        {
+            Debug.Log("NPC will fight the criminal");
+
+            NPC_BinaryBehaviour npc_behaviour = GetComponent<NPC_BinaryBehaviour>();
+
+            // Set reaction state to FIGHT and call respond to signal (causes state change)
+            npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.FIGHT);
+            npc_behaviour.RespondToSignal();
+        }
+        // For now, anything else will cause the NPC to not fight 
+        else
+        {
+            Debug.Log("NPC will not fight the criminal");
+        }
+    }
+}
