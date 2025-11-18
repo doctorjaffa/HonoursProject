@@ -1,9 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.AI;
+using Unity.VisualScripting;
 
 public class NPC_BinaryBehaviour : MonoBehaviour
 {
+    // Boolean to set whether receiving fuzzy reaction state or set random binary state
+    public bool is_fuzzy = true;
+
     // Store rigid body component for movement
     private Rigidbody2D body;
 
@@ -25,10 +30,8 @@ public class NPC_BinaryBehaviour : MonoBehaviour
     // Target position for NPC to move towards 
     private Vector2 target_pos;
 
-    //// When the crime committed signal is broadcasted, call the RespondToSignal function 
-    //private void OnEnable() => EventManager.OnCommitCrime += RespondToSignal;
-
-    //private void OnDisable() => EventManager.OnCommitCrime -= RespondToSignal;
+    // Pathfinding agent to move towards target
+    [SerializeField] private NavMeshAgent agent;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,11 +44,20 @@ public class NPC_BinaryBehaviour : MonoBehaviour
 
         // Set default state to NONE
         current_state = ReactionState.NONE;
+
+        // Get the navmesh agent component and ensure it stays within 2d space and does not rotate
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     public void SetReactionState(ReactionState state)
     {
-        reaction_state = state;
+        if (is_fuzzy) reaction_state = state;
+        else
+        {   // If it's a binary simulation, set a random state that isn't None 
+             do { reaction_state = (ReactionState)Random.Range(0, System.Enum.GetValues(typeof(ReactionState)).Length); } while (reaction_state == ReactionState.NONE); 
+        }
     }
 
     public void RespondToSignal() => ChangeState();
@@ -100,8 +112,7 @@ public class NPC_BinaryBehaviour : MonoBehaviour
     // Move towards target in the scene (door or criminal)
     private void MoveTowardTarget(Vector2 target)
     {
-        Vector2 position = Vector2.MoveTowards(body.position, target, speed * Time.deltaTime);
-        body.MovePosition(position);
+        agent.SetDestination(target);
     }
 
     // Handle NPC collisions 

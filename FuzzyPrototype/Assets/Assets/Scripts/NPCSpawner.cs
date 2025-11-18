@@ -33,7 +33,7 @@ public class NPCSpawner : MonoBehaviour
             {
                 // The spot is now occupied
                 spot.is_occupied = true;
-                npcs[i] = Instantiate(npc_prefab, spot.GetComponent<Transform>().position, Quaternion.identity);
+                npcs[i] = Instantiate(npc_prefab, spot.transform.position, Quaternion.identity);
             }
         }
     }

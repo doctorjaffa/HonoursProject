@@ -20,7 +20,7 @@ public class Criminal_Path : MonoBehaviour
     private void Start()
     {
        body = GetComponent<Rigidbody2D>();
-       victim = GameObject.FindGameObjectWithTag("Victim");
+       victim = GameObject.FindWithTag("Victim");
     }
 
     // Update is called once per frame

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4338372602000694611}
   - component: {fileID: 177485140136350070}
   - component: {fileID: 3651979970163917853}
+  - component: {fileID: -7264281134145383881}
   m_Layer: 0
   m_Name: 'NPC '
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8125926154771408241}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.75, y: -3.87, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -133,10 +134,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b559e36768d6a68439c08983c0994d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC_BinaryBehaviour
+  is_fuzzy: 0
   speed: 1
   door: {fileID: 0}
   criminal: {fileID: 0}
   reaction_state: 3
+  agent: {fileID: 0}
 --- !u!114 &177485140136350070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,3 +283,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!195 &-7264281134145383881
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8125926154771408241}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

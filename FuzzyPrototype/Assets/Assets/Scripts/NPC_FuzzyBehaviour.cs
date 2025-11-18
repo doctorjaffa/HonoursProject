@@ -45,9 +45,7 @@ public class NPC_FuzzyBehaviour : MonoBehaviour
             // Set reaction state to FIGHT and call respond to signal (causes state change)
             npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.FIGHT);
 
-            Debug.Log("Processing...");
             await Task.Delay(Random.Range(200, 800));
-            Debug.Log("Reacting.");
 
             npc_behaviour.RespondToSignal();
         }
