@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Door
   - Criminal
+  - SpawnPoint
+  - Victim
   layers:
   - Default
   - TransparentFX

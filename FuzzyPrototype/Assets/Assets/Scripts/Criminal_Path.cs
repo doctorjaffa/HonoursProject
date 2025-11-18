@@ -6,6 +6,9 @@ public class Criminal_Path : MonoBehaviour
     [SerializeField]
     private Transform[] waypoints;
 
+    // Victim actor to destroy when crime is committed
+    [SerializeField] private GameObject victim;
+
     private float speed = 3f;
     // Index of current node the agent is on
     private int current_index = 0;
@@ -17,6 +20,7 @@ public class Criminal_Path : MonoBehaviour
     private void Start()
     {
        body = GetComponent<Rigidbody2D>();
+       victim = GameObject.FindGameObjectWithTag("Victim");
     }
 
     // Update is called once per frame
@@ -29,10 +33,6 @@ public class Criminal_Path : MonoBehaviour
         Transform target = waypoints[current_index];
         Vector3 direction = target.position - transform.position;
         transform.position += direction.normalized * speed * Time.deltaTime;
-        
-        // Rotate to face the waypoint node 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
         // If the agent is closer than the threshold
         if (direction.magnitude < reach_threshold)
@@ -49,6 +49,8 @@ public class Criminal_Path : MonoBehaviour
 
     void CommitCrime()
     {
+        // Commit the murder
+        Object.Destroy(victim);
         // Broadcast the event (will be picked up by NPCs) 
         EventManager.TriggerCrimeResponse();
         // Stop moving 

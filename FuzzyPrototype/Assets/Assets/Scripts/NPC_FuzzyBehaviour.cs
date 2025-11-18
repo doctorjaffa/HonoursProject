@@ -1,5 +1,10 @@
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class NPC_FuzzyBehaviour : MonoBehaviour
 {
@@ -23,8 +28,9 @@ public class NPC_FuzzyBehaviour : MonoBehaviour
     private void OnDisable() => EventManager.OnCommitCrime -= EvaluateStatements;
 
     // Evaluate the different graphs and determine which reaction state to set corresponding to which is most truthful
-    public void EvaluateStatements()
+    public async void EvaluateStatements()
     {
+        Profiler.BeginSample("FuzzyBehaviour");
         // 
         low_value = low.Evaluate(arrogance);
         mid_value = mid.Evaluate(arrogance);
@@ -33,12 +39,16 @@ public class NPC_FuzzyBehaviour : MonoBehaviour
         // If high arrogance is the most truthful (greater than) then the NPC will fight the criminal
         if (high_value > mid_value && high_value > low_value)
         {
-            Debug.Log("NPC will fight the criminal");
 
             NPC_BinaryBehaviour npc_behaviour = GetComponent<NPC_BinaryBehaviour>();
 
             // Set reaction state to FIGHT and call respond to signal (causes state change)
             npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.FIGHT);
+
+            Debug.Log("Processing...");
+            await Task.Delay(Random.Range(200, 800));
+            Debug.Log("Reacting.");
+
             npc_behaviour.RespondToSignal();
         }
         // For now, anything else will cause the NPC to not fight 
