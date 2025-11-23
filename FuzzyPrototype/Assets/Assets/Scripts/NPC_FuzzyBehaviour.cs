@@ -44,21 +44,26 @@ public class NPC_FuzzyBehaviour : MonoBehaviour
         high_value = high.Evaluate(arrogance);
 
         // If high arrogance is the most truthful (greater than) then the NPC will fight the criminal
-        if (high_value > mid_value && high_value > low_value)
+        if (high_value > mid_value)
         {
 
             // Set reaction state to FIGHT and call respond to signal (causes state change)
             npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.FIGHT);
 
         }
-        // For now, anything else will cause the NPC to not fight and flee instead
-        else
+        // If the mid value is greater, npc will flee (confident enough to flee)
+        else if (mid_value >= low_value && mid_value >= high_value) 
         {
-            Debug.Log("NPC will not fight the criminal");
             npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.FLEE);
 
         }
+        // Otherwise, NPC is too scared and will cower
+        else
+        {
+            npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.COWER);
+        }
 
+        // Wait a random amount of brief time before responding to signal
         await Task.Delay(Random.Range(200, 800));
 
         npc_behaviour.RespondToSignal();

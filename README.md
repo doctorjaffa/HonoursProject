@@ -10,6 +10,7 @@ NPCs have one of three reactions:
 
 Fuzzy logic has arrogance implemented, with a range of 0-10, with the following reactions: 
 - 8-10: Fight
-- 0-7: Flees (this is prototype, no cower implemented for now). 
+- 3-7: Flees 
+- 0-2: Cowers
 
 NPC_BinaryBehaviour has a Boolean (is_fuzzy) to control whether binary or fuzzy simulation. 
