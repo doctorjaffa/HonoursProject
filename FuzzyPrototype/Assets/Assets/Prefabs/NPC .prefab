@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b559e36768d6a68439c08983c0994d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC_BinaryBehaviour
-  is_fuzzy: 0
+  is_fuzzy: 1
   speed: 1
   door: {fileID: 0}
   criminal: {fileID: 0}

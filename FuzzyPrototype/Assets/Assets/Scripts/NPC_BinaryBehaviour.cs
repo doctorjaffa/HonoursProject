@@ -33,6 +33,22 @@ public class NPC_BinaryBehaviour : MonoBehaviour
     // Pathfinding agent to move towards target
     [SerializeField] private NavMeshAgent agent;
 
+    private void OnEnable()
+    {
+        if (!is_fuzzy)
+        {
+            EventManager.OnCommitCrime += RandomReaction;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (!is_fuzzy)
+        {
+            EventManager.OnCommitCrime -= RandomReaction;
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -58,6 +74,11 @@ public class NPC_BinaryBehaviour : MonoBehaviour
         {   // If it's a binary simulation, set a random state that isn't None 
              do { reaction_state = (ReactionState)Random.Range(0, System.Enum.GetValues(typeof(ReactionState)).Length); } while (reaction_state == ReactionState.NONE); 
         }
+    }
+
+    public void RandomReaction()
+    {
+        reaction_state = (ReactionState)Random.Range(0, System.Enum.GetValues(typeof(ReactionState)).Length);
     }
 
     public void RespondToSignal() => ChangeState();

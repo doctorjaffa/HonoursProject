@@ -22,10 +22,17 @@ public class NPC_FuzzyBehaviour : MonoBehaviour
     [SerializeField] private float mid_value = 0f;
     [SerializeField] private float high_value = 0f;
 
+    private NPC_BinaryBehaviour npc_behaviour;
+
     // When the crime committed signal is broadcasted, evaluate which reaction the NPC should have
     private void OnEnable() => EventManager.OnCommitCrime += EvaluateStatements;
 
     private void OnDisable() => EventManager.OnCommitCrime -= EvaluateStatements;
+
+    void Start()
+    {
+        npc_behaviour = GetComponent<NPC_BinaryBehaviour>();
+    }
 
     // Evaluate the different graphs and determine which reaction state to set corresponding to which is most truthful
     public async void EvaluateStatements()
@@ -40,19 +47,20 @@ public class NPC_FuzzyBehaviour : MonoBehaviour
         if (high_value > mid_value && high_value > low_value)
         {
 
-            NPC_BinaryBehaviour npc_behaviour = GetComponent<NPC_BinaryBehaviour>();
-
             // Set reaction state to FIGHT and call respond to signal (causes state change)
             npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.FIGHT);
 
-            await Task.Delay(Random.Range(200, 800));
-
-            npc_behaviour.RespondToSignal();
         }
-        // For now, anything else will cause the NPC to not fight 
+        // For now, anything else will cause the NPC to not fight and flee instead
         else
         {
             Debug.Log("NPC will not fight the criminal");
+            npc_behaviour.SetReactionState(NPC_BinaryBehaviour.ReactionState.FLEE);
+
         }
+
+        await Task.Delay(Random.Range(200, 800));
+
+        npc_behaviour.RespondToSignal();
     }
 }

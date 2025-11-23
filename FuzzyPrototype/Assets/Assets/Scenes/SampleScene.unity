@@ -2460,7 +2460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCSpawner
   npc_prefab: {fileID: 8125926154771408241, guid: 1a51e276a6a490f4da1639ea367f75a0, type: 3}
-  num_npcs: 25
+  num_npcs: 11
 --- !u!4 &1182065066
 Transform:
   m_ObjectHideFlags: 0
